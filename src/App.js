@@ -5,17 +5,16 @@ import Profile from "./profile";
 import About from "./about";
 import Navbar from "./navbar";
 import Protected from "./protected";
+import routes from "./routes";
 
 function App() {
   const [isLoggedIn, setisLoggedIn] = useState(null);
+
   const logIn = useCallback(() => {
-    console.log("App Called 1");
     setisLoggedIn(true);
   }, [isLoggedIn]);
-  console.log("App Called 1");
 
   const logOut = useCallback(() => {
-    console.log("App Called 2");
     setisLoggedIn(false);
   }, [isLoggedIn]);
 
@@ -29,22 +28,17 @@ function App() {
       )}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route
-          path="/profile"
-          element={
-            <Protected isLoggedIn={isLoggedIn}>
-              <Profile />
-            </Protected>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <Protected isLoggedIn={isLoggedIn}>
-              <About />
-            </Protected>
-          }
-        />
+        {routes.map((route, index) => (
+          <Route
+            path={route.path}
+            key={index}
+            element={
+              <Protected isLoggedIn={isLoggedIn}>
+                <route.element />
+              </Protected>
+            }
+          />
+        ))}
       </Routes>
     </Router>
   );
